@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R Systems Optima AI Framework for Project Managers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2d1b69 0%, #1e0e3e 50%, #0f0621 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: 60px 80px;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            line-height: 1.2;
+        }
+
+        .slide h2 {
+            font-size: 2.8em;
+            margin-bottom: 40px;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            line-height: 1.3;
+        }
+
+        .slide h3 {
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            color: #00ff88;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .slide p {
+            font-size: 1.4em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+
+        .slide ul {
+            font-size: 1.3em;
+            line-height: 1.8;
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .slide li {
+            margin-bottom: 15px;
+            color: #e0e0e0;
+        }
+
+        .subtitle {
+            font-size: 1.8em;
+            color: #00ff88;
+            margin-bottom: 50px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .logo {
+            position: absolute;
+            top: 40px;
+            left: 60px;
+            font-size: 2em;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .logo::before {
+            content: "R";
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            border-radius: 8px;
+            text-align: center;
+            line-height: 50px;
+            margin-right: 10px;
+            font-weight: bold;
+            color: #1e0e3e;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 30px;
+            right: 60px;
+            font-size: 1.2em;
+            color: #888;
+        }
+
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .nav-btn:hover {
+            background: #00ff88;
+            color: #1e0e3e;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .framework-box {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            max-width: 1000px;
+            backdrop-filter: blur(10px);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .benefit-card {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #00ccff;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #00ff88;
+        }
+
+        .demo-title {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .engagement-steps {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .step {
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 30px;
+            width: 250px;
+            backdrop-filter: blur(10px);
+        }
+
+        .step-number {
+            background: #00ff88;
+            color: #1e0e3e;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 0 auto 20px;
+        }
+
+        .contact-info {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #00ccff;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 30px auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-info h3 {
+            color: #00ccff;
+            margin-bottom: 20px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .tool-card {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ccff;
+        }
+
+        .tool-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .tool-card h4 {
+            color: #ffffff;
+            font-size: 1.2em;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .component-card {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #00ccff;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .component-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ff88;
+        }
+
+        .component-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .component-card h3 {
+            color: #00ccff;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .component-card p {
+            color: #e0e0e0;
+            font-size: 1.1em;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .slide-title {
+            position: absolute;
+            top: 40px;
+            right: 60px;
+            font-size: 1.2em;
+            color: #888;
+            text-align: right;
+        }
+
+        .highlight {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .accent {
+            color: #00ccff;
+        }
+
+        .connectors-infographic {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 40px auto;
+            gap: 40px;
+        }
+
+        .data-sources {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            flex: 1;
+        }
+
+        .source-card {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #00ff88;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .source-card:hover {
+            transform: translateY(-3px);
+            border-color: #00ccff;
+        }
+
+        .source-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .source-card h4 {
+            color: #ffffff;
+            font-size: 1.1em;
+            margin: 0;
+        }
+
+        .connector-flow {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .flow-arrow {
+            font-size: 2em;
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .ai-hub {
+            background: rgba(255,255,255,0.15);
+            border: 3px solid #00ccff;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0,204,255,0.3);
+        }
+
+        .hub-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .ai-hub h3 {
+            color: #00ccff;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .ai-hub p {
+            color: #e0e0e0;
+            font-size: 1em;
+            margin: 0;
+        }
+
+        .unified-output {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .output-card {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            max-width: 250px;
+        }
+
+        .output-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .output-card h4 {
+            color: #00ff88;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .output-card p {
+            color: #e0e0e0;
+            font-size: 1em;
+            margin: 0;
+        }
+
+        .contact-info p {
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 40px 50px;
+            }
+            
+            .slide h1 {
+                font-size: 2.8em;
+            }
+            
+            .slide h2 {
+                font-size: 2.2em;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .components-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .connectors-infographic {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .data-sources {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .connector-flow {
+                flex-direction: row;
+                gap: 15px;
+            }
+            
+            .engagement-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="logo">SYSTEMS</div>
+        
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <h1>R Systems <span class="highlight">Optima AI Framework</span></h1>
+            <p class="subtitle">Transforming Project Management Through Intelligent Automation</p>
+            <div class="slide-number">1 / 16</div>
+        </div>
+
+        <!-- Slide 2: Why AI is Critical -->
+        <div class="slide">
+            <h2>Why AI is Critical for Modern Project Management</h2>
+            <div class="framework-box">
+                <h3>The Project Management Crisis</h3>
+                <ul>
+                    <li><span class="highlight">Only 35% of projects</span> are completed successfully on time and within budget</li>
+                    <li><span class="highlight">Project Managers spend 54%</span> of their time on administrative tasks vs. strategic work</li>
+                    <li><span class="highlight">Data fragmentation</span> across 5-10 different tools creates blind spots</li>
+                    <li><span class="highlight">Manual processes</span> lead to delayed risk identification and poor decision-making</li>
+                </ul>
+            </div>
+            <div class="slide-number">2 / 16</div>
+        </div>
+
+        <!-- Slide 3: Framework Introduction -->
+        <div class="slide">
+            <h2>Introducing R Systems <span class="highlight">Optima AI Framework</span></h2>
+            <p class="subtitle">Plug-and-Play AI Intelligence for Project Management</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">🤖</div>
+                    <h4>GitHub Copilot Integration</h4>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">⚡</div>
+                    <h4>Cursor AI Agents</h4>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📚</div>
+                    <h4>Optima AI Prompt Library (PM-Tuned)</h4>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🔧</div>
+                    <h4>Smart Data Adapters & Configs</h4>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🎯</div>
+                    <h4>Agentic Architecture</h4>
+                </div>
+            </div>
+            <div class="slide-number">3 / 16</div>
+        </div>
+
+        <!-- Slide 4: Framework Benefits -->
+        <div class="slide">
+            <h2>Framework Benefits - Transforming PM Productivity</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🚀</div>
+                    <h3>PRODUCTIVITY</h3>
+                    <p><span class="highlight">2-3x Faster</span> Task Execution</p>
+                    <p><span class="highlight">40% Reduction</span> in Admin Time</p>
+                    <p><span class="highlight">60% Faster</span> Risk Detection</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔗</div>
+                    <h3>CONNECTIVITY</h3>
+                    <p><span class="highlight">Unified View</span> of All Data</p>
+                    <p><span class="highlight">Single Source</span> of Truth</p>
+                    <p><span class="highlight">Automated Sync</span> Across Platforms</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🧠</div>
+                    <h3>INTELLIGENCE</h3>
+                    <p><span class="highlight">Predictive</span> Risk Analysis</p>
+                    <p><span class="highlight">Real-time</span> Insights</p>
+                    <p><span class="highlight">Data-Driven</span> Decisions</p>
+                </div>
+            </div>
+            <div class="slide-number">4 / 16</div>
+        </div>
+
+        <!-- Slide 5: Framework Components -->
+        <div class="slide">
+            <h2>Framework Components - The <span class="highlight">Optima AI</span> Ecosystem</h2>
+            <div class="components-grid">
+                <div class="component-card">
+                    <div class="component-icon">📝</div>
+                    <h3>PM-Tailored Cursor Rules & Prompt Packs</h3>
+                    <p>Project health analysis, cross-platform synthesis, intelligent prioritization</p>
+                </div>
+                <div class="component-card">
+                    <div class="component-icon">🔗</div>
+                    <h3>MCP Servers & Data Connectors</h3>
+                    <p>Pre-built connectors for 15+ popular PM tools with real-time data streaming</p>
+                </div>
+                <div class="component-card">
+                    <div class="component-icon">📚</div>
+                    <h3>Knowledge Base Indexing with Built-in Guardrails</h3>
+                    <p>Intelligent document processing with privacy-first indexing</p>
+                </div>
+            </div>
+            <div class="slide-number">5 / 16</div>
+        </div>
+
+        <!-- Slide 6: Privacy & Security -->
+        <div class="slide">
+            <h2>Privacy & Data Security - <span class="highlight">Your Data, Your Control</span></h2>
+            <div class="framework-box">
+                <h3>🛡️ Zero Data Retention Policy</h3>
+                <ul>
+                    <li>No model training on your organizational data</li>
+                    <li>Local processing with cloud-assisted intelligence</li>
+                    <li>Audit trails for all AI interactions</li>
+                </ul>
+                
+                <h3>🏠 100% Data Residency</h3>
+                <p>All processing within your infrastructure - No external data transmission</p>
+                
+                <h3>🔒 Built-in Privacy Guardrails</h3>
+                <ul>
+                    <li>PII Redaction & Access Controls</li>
+                    <li>Data Classification & Compliance Ready</li>
+                    <li>GDPR, CCPA, SOC2, ISO 27001 aligned</li>
+                </ul>
+            </div>
+            <div class="slide-number">6 / 16</div>
+        </div>
+
+        <!-- Demo Slides -->
+        <div class="slide">
+            <h2>Plug-and-Play Data Silo Connectors</h2>
+            <div class="connectors-infographic">
+                <div class="data-sources">
+                    <div class="source-card">
+                        <div class="source-icon">📊</div>
+                        <h4>JIRA</h4>
+                    </div>
+                    <div class="source-card">
+                        <div class="source-icon">📝</div>
+                        <h4>Notion</h4>
+                    </div>
+                    <div class="source-card">
+                        <div class="source-icon">💬</div>
+                        <h4>Slack</h4>
+                    </div>
+                    <div class="source-card">
+                        <div class="source-icon">📧</div>
+                        <h4>Gmail</h4>
+                    </div>
+                    <div class="source-card">
+                        <div class="source-icon">📅</div>
+                        <h4>Calendar</h4>
+                    </div>
+                    <div class="source-card">
+                        <div class="source-icon">🔗</div>
+                        <h4>Linear</h4>
+                    </div>
+                </div>
+                <div class="connector-flow">
+                    <div class="flow-arrow">→</div>
+                    <div class="ai-hub">
+                        <div class="hub-icon">🤖</div>
+                        <h3>Optima AI</h3>
+                        <p>Intelligent Integration Hub</p>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                </div>
+                <div class="unified-output">
+                    <div class="output-card">
+                        <div class="output-icon">📊</div>
+                        <h4>Unified Dashboard</h4>
+                        <p>Real-time project insights</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">7 / 12</div>
+        </div>
+
+        <div class="slide">
+            <h2 class="demo-title">Cross Silo Requirement Gathering and Sprint Board Publishing</h2>
+            <div class="slide-number">8 / 12</div>
+        </div>
+
+        <div class="slide">
+            <h2 class="demo-title">Agent Led Sprint Planning</h2>
+            <div class="slide-number">9 / 12</div>
+        </div>
+
+        <div class="slide">
+            <h2 class="demo-title">Stand-up Summariser</h2>
+            <div class="slide-number">10 / 12</div>
+        </div>
+
+        <div class="slide">
+            <h2 class="demo-title">Automated Status Reporting</h2>
+            <div class="slide-number">11 / 12</div>
+        </div>
+
+        <!-- Slide 14: Implementation -->
+        <div class="slide">
+            <h2>Implementation & Engagement Model</h2>
+            <h3>AI Champions Pod Approach</h3>
+            <div class="engagement-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>Foundation</h4>
+                    <p>Weeks 1-2</p>
+                    <p>AI Champions Pod: 2 R Systems Engineers</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Training</h4>
+                    <p>Weeks 3-4</p>
+                    <p>PM team training & best practices workshops</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>Scale</h4>
+                    <p>Weeks 5-8</p>
+                    <p>Optimization & organization-wide rollout</p>
+                </div>
+            </div>
+            <div class="slide-number">12 / 12</div>
+        </div>
+
+        <!-- Slide 15: Q&A -->
+        <div class="slide">
+            <h2>Questions & Discussion</h2>
+            <h3>Let's Explore Your PM Challenges</h3>
+            <div class="framework-box">
+                <h3>Common Questions We Address:</h3>
+                <ul>
+                    <li>🤔 <strong>"How quickly can we see ROI?"</strong> → Typically 30-60 days</li>
+                    <li>🔒 <strong>"What about data security?"</strong> → 100% data residency</li>
+                    <li>🛠️ <strong>"How complex is the setup?"</strong> → Plug-and-play with support</li>
+                    <li>📊 <strong>"Can we customize for our processes?"</strong> → Fully configurable</li>
+                    <li>👥 <strong>"What training is required?"</strong> → Comprehensive but intuitive</li>
+                </ul>
+            </div>
+            <div class="slide-number">13 / 13</div>
+        </div>
+
+        <!-- Slide 16: Thank You -->
+        <div class="slide">
+            <h1>Transform Your Project Management Today</h1>
+            <p class="subtitle">"The future of project management is here. It's intelligent, connected, and ready to transform how your teams deliver value."</p>
+            <div class="contact-info">
+                <h3>Ready to get started?</h3>
+                <p>📧 <strong>Email:</strong> optima-ai@rsystems.com</p>
+                <p>📱 <strong>Schedule:</strong> calendly.com/rsystems-optima</p>
+                <p>💼 <strong>Learn More:</strong> rsystems.com/optima-ai-framework</p>
+            </div>
+            <p><em>R Systems - Empowering Digital Transformation Through Intelligent Automation</em></p>
+            <div class="slide-number">14 / 14</div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            if (direction === 1 && currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            } else if (direction === -1 && currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
